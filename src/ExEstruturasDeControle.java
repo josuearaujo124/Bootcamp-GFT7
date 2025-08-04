@@ -32,13 +32,15 @@ public class ExEstruturasDeControle {
 
         System.out.println("Seja bem-vindo qual das soluções voce deseja usar?");
         System.out.print(" 1.calculo de tabuada \n 2.calcule o seu imc\n");
-        System.out.print(" 3.calcule a quant de pares ou impares em um intervalo \n 4.tente encerrar a divisão requisito (resto da divisão = 0)\n ");
+        System.out.print(" 3.calcule a quant de pares ou impares em um intervalo \n 4.tente encerrar a divisão requisito (resto da divisão tem que ser diferente de 0)\n ");
         opção = s.nextInt();
         
 
         switch (opção) {
             case 1 -> calculoTabuada();
             case 2 -> CalculoIMC();
+            case 3 -> calcQuantParesOuImpares();
+            case 4 -> divisãoDiferenteDeZero();
             
         
             default -> System.out.println("essa opção não e valida");
@@ -131,4 +133,66 @@ public class ExEstruturasDeControle {
     }  
 
 
+    public static boolean calcQuantParesOuImpares() {
+        int valorInicial,valorFinal,opção = 0;
+
+
+        System.out.println("vamos calcular a quantidade de pares ou impares em um intervalo");
+        System.out.println("Digite o valor inicial:");
+        valorInicial = s.nextInt();
+        System.out.println("agora digite o valor final");
+        valorFinal = s.nextInt();
+        System.out.println("agora digite \n1. para pares ou \n2. para impares");
+        opção = s.nextInt();
+        System.out.println();
+
+        if (opção == 1) {
+            while (valorInicial < valorFinal) {
+                if (valorInicial % 2 == 0) {
+                    System.out.print(valorInicial + " ");
+                }
+                valorInicial++;
+            }
+        }else if (opção == 2) {
+            while (valorInicial < valorFinal) {
+                if (valorInicial %2 !=0) {
+                    System.out.print(valorInicial + " ");
+                }
+                valorInicial++;
+            }
+        }
+
+
+        return true;
+    }
+
+    /*Escreva um codigo onde o usuario informa um numero inicial, posteriomente ira informar outros n numeros,
+       a execução do codigo ira continuar ate que o numero informado divido pelo primeiro numero tenha resto diferente
+       de 0 na divisao,numeros menores que o primeiro numero devem ser ignorados.
+    */
+
+    public static boolean divisãoDiferenteDeZero() {
+        double divisor,dividendo;
+
+
+        System.out.println("digite o divisor");
+        divisor = s.nextDouble();
+        
+        System.out.println("Digite o dividendo");
+            dividendo = s.nextDouble();
+
+        while (dividendo % divisor == 0 || dividendo < divisor) {
+            System.out.println("digite o dividendo novamente");
+            dividendo = s.nextDouble();
+
+            if (dividendo < divisor) {
+                System.out.println("dividendo invalido ( o dividendo deve ser maior que o divisor)");
+            }
+        }
+
+
+        System.out.println("parabens voce conseguiu");
+
+        return true;
+    }
 }
