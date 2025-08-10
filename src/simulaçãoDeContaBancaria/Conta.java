@@ -3,11 +3,12 @@ import java.util.Scanner;
 
 
 public class Conta {
-    
+    Scanner leitor = new Scanner(System.in);
     private String name;
     private double saldo;
     private double tetochequeEspecial;
     private double chequeEspecialAtual;
+    
     
 
     public Conta (String name ,double saldo){
@@ -38,26 +39,39 @@ public class Conta {
         return name;
     }
 
+    public double getterSaldo(){
+        return saldo;
+    }
+
     public void consultarSaldo(){
         System.out.printf("Voce possui R$ %.2f de saldo e %.2f de cheque especial \n",saldo,chequeEspecialAtual);
+        trava();
     }
 
     public void consultarChequeEspecial(){
         System.out.printf("Voce possui R$ %.2f de cheque especial",chequeEspecialAtual);
+        trava();
     }
 
     public void depositarDinheiro(double deposito){
         if (chequeEspecialAtual == tetochequeEspecial) {
          saldo += deposito;   
          System.out.printf("Seu saldo agora é %.2f",saldo);
+         trava();
         }else{
             double divida = tetochequeEspecial - chequeEspecialAtual;
+            double dividaCom20PorCento = divida + (divida * 0.2);
             if (deposito < divida) {
+                deposito -= deposito *0.2;
                 chequeEspecialAtual += deposito;
+                consultarSaldo();
+                trava();
             }else{
-                deposito -= divida;
+                chequeEspecialAtual = tetochequeEspecial;
+                deposito -= dividaCom20PorCento;
                 saldo += deposito;
-                System.out.printf("Seu saldo agora é %.2f",saldo);
+                consultarSaldo();
+                trava();
             }
         }
     }
@@ -65,26 +79,26 @@ public class Conta {
     public void sacarDinherio(double sacar){
 
         if (sacar < saldo) {
-            Scanner leitor = new Scanner(System.in);
             saldo -= sacar;
             System.out.printf("\nVocê sacou R$%.2f e sobrou o saldo de R$%.2f",sacar,saldo);
             System.out.println("\n\nDigite 1 para continuar\n\n");
-            int trava = leitor.nextInt();
-            }else{
+            trava();
 
-               Scanner leitor = new Scanner(System.in);
+            }else{
                 System.out.println("\nVoce nao possui saldo suficiente, Deseja usar cheque especial?\n Digite 1 para sim \n Digite 2 para não\n");
                 int opcao = leitor.nextInt();
 
                 if (opcao == 1 && sacar < saldo + chequeEspecialAtual) {
 
-                    int saqueChequeEspecial = 
+                    double saqueChequeEspecial = sacar - saldo;
+                    saldo = 0;
+                    chequeEspecialAtual -= saqueChequeEspecial;
 
-                    System.out.printf("znVocê sacou R$%.2f e sobrou o saldo de R$%.2f e o cheque especial de R$%.2f",sacar,saldo,chequeEspecialAtual);
-                    System.out.println("\n\nDigite 1 para continuar\n\n");
-                    int trava = leitor.nextInt();
+                    System.out.printf("\nVocê sacou R$%.2f e sobrou o saldo de R$%.2f e o cheque especial de R$%.2f",sacar,saldo,chequeEspecialAtual);
+                    trava();
                 }else{
                     System.out.println("\nvocê nao possui saldo nem cheque especial o sufuciente tente novamente!");
+                    trava();
                 }
                 
                
@@ -92,6 +106,33 @@ public class Conta {
 
 
     }
+
+    public boolean pagarBoleto(double valor){
+        if (valor < saldo) {
+            System.out.println("Boleto pago com Sucesso");
+            saldo -= valor;
+            trava();
+        return true;
+        }else{
+            System.out.println("Você não possui saldo suficiente");
+            trava();
+            return false;
+        }
+
+    }
+
+    
+    
+    private void trava(){
+        System.out.println("\n\nDigite 1 para continuar\n\n");
+        int trava = leitor.nextInt();
+        
+        
+        
+    }
+
+   
+    
 
 
 }
